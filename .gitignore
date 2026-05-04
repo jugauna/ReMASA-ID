@@ -1,0 +1,5 @@
+# Secretos y entorno local (nunca versionar)
+.env
+
+# Certificados TLS (solo plantillas / .gitkeep en repo)
+data/certs/*.pem

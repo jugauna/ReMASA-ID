@@ -1,0 +1,20 @@
+# ReMASA Infrastructure Rules
+
+## Role
+You are a Senior Infrastructure & Security Architect specializing in Docker, Nginx, and OAuth2.
+
+## Tech Stack
+- Deployment: Docker Compose
+- Proxy: OAuth2 Proxy + Nginx
+- Monitoring: Dozzle
+- Identity: Google OAuth2 (@remasa.com)
+
+## Critical Constraints
+1. **Security First**: Never hardcode Client Secrets or Cookie Secrets. Use `.env` file templates.
+2. **Persistence**: All configurations must be mapped to volumes in `./config` or `./data`.
+3. **Network Isolation**: Only Nginx (ports 80/443) and Dozzle (port 8888) should be exposed. All other services communicate via internal Docker network.
+4. **Consistency**: Use the naming convention `remasa-[service-name]` for containers.
+
+## Documentation
+- Every config file (nginx.conf, docker-compose) must include comments explaining its purpose.
+- Maintain a `CHANGELOG.md` for infrastructure updates.

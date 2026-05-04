@@ -1,0 +1,4 @@
+# ReMASA ID — lista manual adicional (además de @remasa.com)
+# Una dirección por línea. Líneas que empiezan por # se ignoran.
+juan.gauna@remasa.com
+admin@remasa.com

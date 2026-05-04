@@ -1,0 +1,112 @@
+# ReMASA ID - Orquestacion Docker Compose
+# -----------------------------------------------------------------------------
+# Infraestructura de identidad y acceso centralizada:
+# - OAuth2 Proxy autentica usuarios @remasa.com con Google.
+# - Nginx aplica auth_request y enruta por subdominio.
+# - Dozzle expone observabilidad operativa.
+#
+# Seguridad y red:
+# - Solo Nginx publica 80/443.
+# - Dozzle publica PORT_LOGS (por defecto 8888).
+# - El resto de servicios quedan aislados en la red interna.
+#
+# Persistencia en el host (bind mounts):
+# - ./config  configuracion y listas (OAuth2, whitelist).
+# - ./data/certs  certificados TLS (fullchain.pem, privkey.pem).
+# - ./data/logs/nginx  logs de acceso y error de Nginx.
+# - ./data/dozzle  datos opcionales del visor Dozzle.
+#
+# Nodo de produccion: VPS 67.207.83.113 (IP_VPS en .env).
+# Intranet WordPress: Hostinger 89.117.7.185 (${IP_HOSTINGER}).
+# Repositorio: https://github.com/jugauna/ReMASA-ID.git
+# Todas las variables se centralizan en .env.
+# -----------------------------------------------------------------------------
+
+services:
+  # OAuth2 Proxy: validacion de sesion Google y emision de cabeceras X-Auth-Request-*
+  # para Nginx via auth_request.
+  remasa-id-proxy:
+    image: quay.io/oauth2-proxy/oauth2-proxy:v7.6.0
+    container_name: remasa-id-proxy
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      OAUTH2_PROXY_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      OAUTH2_PROXY_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      OAUTH2_PROXY_COOKIE_SECRET: ${OAUTH2_PROXY_COOKIE_SECRET}
+      OAUTH2_PROXY_COOKIE_DOMAINS: .${DOMAIN_ROOT}
+      OAUTH2_PROXY_WHITELIST_DOMAINS: .${DOMAIN_ROOT}
+      # Callback OAuth2 fijo (Google Console debe coincidir exactamente).
+      OAUTH2_PROXY_REDIRECT_URL: https://login.remasa.com/oauth2/callback
+    command:
+      - --http-address=0.0.0.0:4180
+      - --provider=google
+      - --email-domain=remasa.com
+      - --authenticated-emails-file=/config/authenticated_emails.txt
+      - --reverse-proxy=true
+      - --set-xauthrequest=true
+      - --pass-access-token=false
+      - --cookie-secure=true
+      - --cookie-samesite=lax
+      - --cookie-refresh=1h
+      - --cookie-expire=8h
+      - --upstream=file:///dev/null
+      - --custom-templates-dir=/opt/remasa-proxy/templates
+      - --skip-provider-button=true
+    volumes:
+      - ./config:/config:ro
+      - ./proxy:/opt/remasa-proxy/templates:ro
+    networks:
+      - remasa-id-internal
+
+  # Nginx: punto de entrada HTTP/HTTPS, auth_request centralizado y ruteo por dominio.
+  remasa-id-nginx:
+    image: nginx:1.27-alpine
+    container_name: remasa-id-nginx
+    restart: unless-stopped
+    depends_on:
+      - remasa-id-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      DOMAIN_ROOT: ${DOMAIN_ROOT}
+      SUBDOMAIN_LOGIN: ${SUBDOMAIN_LOGIN}
+      SUBDOMAIN_INTRANET: ${SUBDOMAIN_INTRANET}
+      SUBDOMAIN_INVOICE: ${SUBDOMAIN_INVOICE}
+      SUBDOMAIN_PYG: ${SUBDOMAIN_PYG}
+      IP_HOSTINGER: ${IP_HOSTINGER}
+      PORT_INVOICE_APP: ${PORT_INVOICE_APP}
+      PORT_PYG_APP: ${PORT_PYG_APP}
+    volumes:
+      - ./nginx/default.conf.template:/etc/nginx/templates/default.conf.template:ro
+      - ./nginx/includes:/etc/nginx/includes:ro
+      - ./dashboard:/var/www/intranet:ro
+      - ./data/certs:/etc/nginx/certs:ro
+      - ./data/logs/nginx:/var/log/nginx
+    extra_hosts:
+      # Enlace a apps Python ejecutandose en el host (fuera de Docker).
+      - "host.docker.internal:host-gateway"
+    networks:
+      - remasa-id-internal
+
+  # Dozzle: visor de logs de contenedores.
+  remasa-id-logs:
+    image: amir20/dozzle:latest
+    container_name: remasa-id-logs
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "${PORT_LOGS}:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./data/dozzle:/data
+    networks:
+      - remasa-id-internal
+
+networks:
+  remasa-id-internal:
+    driver: bridge
+    name: remasa-id-internal

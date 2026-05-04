@@ -1,0 +1,193 @@
+/* ReMASA ID — Login (estética alineada con remasa.com: azul corporativo, limpio, profesional) */
+:root {
+  --remasa-blue: #005ea8;
+  --remasa-blue-mid: #0078c8;
+  --remasa-blue-dark: #003d6b;
+  --remasa-sky: #e8f2fb;
+  --remasa-bg: #f5f8fc;
+  --remasa-text: #1a2332;
+  --remasa-muted: #5c6b7f;
+  --remasa-card: #ffffff;
+  --remasa-radius: 16px;
+  --remasa-shadow: 0 20px 50px rgba(0, 61, 107, 0.12);
+  --remasa-border: rgba(0, 94, 168, 0.12);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body.login-page {
+  font-family: "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: var(--remasa-text);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+.login-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(1200px 600px at 10% -10%, rgba(0, 120, 200, 0.18), transparent 55%),
+    radial-gradient(900px 500px at 100% 20%, rgba(0, 94, 168, 0.12), transparent 50%),
+    linear-gradient(180deg, var(--remasa-sky) 0%, var(--remasa-bg) 45%, #eef3f9 100%);
+}
+
+.login-shell {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.25rem 3rem;
+  max-width: 440px;
+  margin: 0 auto;
+}
+
+.brand {
+  text-align: center;
+  margin-bottom: 1.75rem;
+}
+
+.brand-logo {
+  font-size: clamp(1.75rem, 5vw, 2rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+.brand-logo__mark {
+  color: var(--remasa-blue);
+}
+
+.brand-logo__text {
+  color: var(--remasa-blue-dark);
+}
+
+.brand-tagline {
+  margin: 0.5rem 0 0;
+  font-size: 0.95rem;
+  color: var(--remasa-muted);
+  font-weight: 500;
+}
+
+.login-card {
+  width: 100%;
+  background: var(--remasa-card);
+  border-radius: var(--remasa-radius);
+  box-shadow: var(--remasa-shadow);
+  border: 1px solid var(--remasa-border);
+  padding: 1.75rem 1.75rem 1.5rem;
+}
+
+.login-title {
+  margin: 0 0 0.35rem;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--remasa-blue-dark);
+}
+
+.login-lead {
+  margin: 0 0 1.35rem;
+  font-size: 0.95rem;
+  color: var(--remasa-muted);
+}
+
+.login-lead strong {
+  color: var(--remasa-blue);
+  font-weight: 600;
+}
+
+.btn-google {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border: 0;
+  border-radius: 12px;
+  background: linear-gradient(180deg, var(--remasa-blue-mid) 0%, var(--remasa-blue) 100%);
+  color: #fff;
+  font-size: 0.98rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 94, 168, 0.35);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+.btn-google:hover {
+  filter: brightness(1.05);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 22px rgba(0, 94, 168, 0.4);
+}
+
+.btn-google:active {
+  transform: translateY(0);
+}
+
+.btn-google__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  font-weight: 800;
+  font-size: 0.85rem;
+  line-height: 1;
+  color: #fff;
+}
+
+.login-footnote {
+  margin: 1rem 0 0;
+  font-size: 0.78rem;
+  color: var(--remasa-muted);
+  text-align: center;
+}
+
+.login-footer {
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--remasa-muted);
+}
+
+.login-footer a {
+  color: var(--remasa-blue);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.login-footer a:hover {
+  text-decoration: underline;
+}
+
+.login-footer .dot {
+  opacity: 0.45;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-google {
+    transition: none;
+  }
+  .btn-google:hover {
+    transform: none;
+  }
+}

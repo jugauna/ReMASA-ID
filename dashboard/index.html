@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ReMASA — Intranet Hub</title>
+    <style>
+      :root {
+        --blue: #005ea8;
+        --blue-dark: #003d6b;
+        --blue-soft: #e8f2fb;
+        --bg: #f5f8fc;
+        --card: #fff;
+        --text: #1a2332;
+        --muted: #5c6b7f;
+        --radius: 16px;
+        --shadow: 0 20px 50px rgba(0, 61, 107, 0.1);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+      }
+      .wrap {
+        max-width: 920px;
+        margin: 0 auto;
+        padding: 2rem 1.25rem 3rem;
+      }
+      .hero {
+        margin-bottom: 1.5rem;
+      }
+      .hero h1 {
+        margin: 0 0 0.25rem;
+        font-size: clamp(1.5rem, 4vw, 1.85rem);
+        color: var(--blue-dark);
+        letter-spacing: -0.02em;
+      }
+      .hero p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.98rem;
+      }
+      .badge {
+        display: inline-block;
+        margin-top: 0.65rem;
+        padding: 0.2rem 0.55rem;
+        border-radius: 999px;
+        font-size: 0.72rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        background: var(--blue-soft);
+        color: var(--blue);
+      }
+      .card {
+        background: var(--card);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        border: 1px solid rgba(0, 94, 168, 0.1);
+        padding: 1.5rem 1.5rem 1.25rem;
+        margin-bottom: 1.25rem;
+      }
+      .card h2 {
+        margin: 0 0 0.75rem;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--muted);
+        font-weight: 700;
+      }
+      .grid {
+        display: grid;
+        gap: 0.75rem;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      }
+      .btn {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.4rem;
+        background: linear-gradient(180deg, #0078c8 0%, var(--blue) 100%);
+        color: #fff;
+        text-decoration: none;
+        border: none;
+        border-radius: 12px;
+        padding: 0.85rem 1rem;
+        font-weight: 600;
+        font-size: 0.95rem;
+        box-shadow: 0 4px 14px rgba(0, 94, 168, 0.28);
+        transition: transform 0.12s ease, filter 0.12s ease;
+      }
+      .btn:hover {
+        filter: brightness(1.06);
+        transform: translateY(-1px);
+      }
+      .btn--ghost {
+        background: var(--card);
+        color: var(--blue);
+        border: 1px solid rgba(0, 94, 168, 0.25);
+        box-shadow: none;
+      }
+      .btn--ghost:hover {
+        background: var(--blue-soft);
+      }
+      .btn--locked {
+        opacity: 0.48;
+        pointer-events: none;
+        cursor: not-allowed;
+        filter: grayscale(0.15);
+        box-shadow: none;
+        background: #9aa8b8;
+      }
+      .hint {
+        margin-top: 1rem;
+        font-size: 0.88rem;
+        color: var(--muted);
+      }
+      .sim {
+        margin-top: 1rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        align-items: center;
+      }
+      .sim input {
+        flex: 1;
+        min-width: 200px;
+        border: 1px solid #c5ced8;
+        border-radius: 10px;
+        padding: 0.6rem 0.75rem;
+        font-size: 0.92rem;
+      }
+      .sim button {
+        border: 0;
+        border-radius: 10px;
+        padding: 0.6rem 1rem;
+        background: var(--blue);
+        color: #fff;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      code {
+        font-size: 0.85em;
+        background: var(--blue-soft);
+        padding: 0.1rem 0.35rem;
+        border-radius: 6px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="hero">
+        <h1>Intranet Hub</h1>
+        <p id="roleLine">Cargando perfil…</p>
+        <span id="roleBadge" class="badge" hidden></span>
+      </header>
+
+      <section class="card">
+        <h2>Acceso general</h2>
+        <p class="hint" style="margin: 0 0 0.75rem">
+          Apps disponibles para personal autenticado en <code>remasa.com</code> (según políticas de cada servicio).
+        </p>
+        <div class="grid">
+          <a class="btn btn--ghost" href="https://intranet.remasa.com">Intranet</a>
+          <a class="btn btn--ghost" href="https://pyg.remasa.com">PyG</a>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Administración IT</h2>
+        <p class="hint" style="margin: 0 0 0.75rem">
+          Solo perfiles <strong>IT Manager</strong> (misma lista que <code>nginx/includes/admin_allow.map</code>).
+          Nginx devuelve <strong>403</strong> en Invoice y Logs si el correo no está autorizado.
+        </p>
+        <div class="grid">
+          <a id="invoiceBtn" class="btn" href="https://invoice.remasa.com">Invoice</a>
+          <a id="logsBtn" class="btn" href="https://logs.remasa.com">Logs</a>
+        </div>
+      </section>
+
+      <p class="hint">
+        Entorno local: simula el correo con <code>?email=tu_correo@remasa.com</code> (el navegador no expone cabeceras HTTP al JS).
+      </p>
+      <div class="sim">
+        <input id="emailInput" type="email" autocomplete="email" placeholder="Correo para simulación local" />
+        <button type="button" id="applyEmail">Aplicar</button>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        var IT_MANAGERS = ["juan.gauna@remasa.com", "admin@remasa.com"];
+
+        var params = new URLSearchParams(window.location.search);
+        var fromQuery = params.get("email");
+        var fromStorage = localStorage.getItem("remasa.hub.email");
+        var email = (fromQuery || fromStorage || "").trim().toLowerCase();
+
+        if (!email) {
+          email = "usuario@remasa.com";
+        }
+        localStorage.setItem("remasa.hub.email", email);
+
+        var isItManager = IT_MANAGERS.indexOf(email) !== -1;
+
+        var roleLine = document.getElementById("roleLine");
+        var roleBadge = document.getElementById("roleBadge");
+        var invoiceBtn = document.getElementById("invoiceBtn");
+        var logsBtn = document.getElementById("logsBtn");
+        var input = document.getElementById("emailInput");
+        var apply = document.getElementById("applyEmail");
+
+        roleLine.textContent = "Sesión simulada / usuario: " + email;
+        input.value = email;
+
+        if (isItManager) {
+          roleBadge.hidden = false;
+          roleBadge.textContent = "IT Manager";
+        } else {
+          roleBadge.hidden = true;
+        }
+
+        function lockItAdminButtons() {
+          [invoiceBtn, logsBtn].forEach(function (el) {
+            el.classList.add("btn--locked");
+            el.setAttribute("aria-disabled", "true");
+            el.title = "Requiere rol IT Manager";
+          });
+          invoiceBtn.textContent = "Invoice — bloqueado";
+          logsBtn.textContent = "Logs — bloqueado";
+        }
+
+        if (!isItManager) {
+          lockItAdminButtons();
+        }
+
+        apply.addEventListener("click", function () {
+          var v = (input.value || "").trim().toLowerCase();
+          if (!v) return;
+          localStorage.setItem("remasa.hub.email", v);
+          var next = new URL(window.location.href);
+          next.searchParams.set("email", v);
+          window.location.href = next.toString();
+        });
+      })();
+    </script>
+  </body>
+</html>
