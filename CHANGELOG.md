@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-05-04 (Django + externos + portal login)
+- Portal unificado: `proxy/custom_sign_in.html` (Google + formulario htpasswd), montado como `sign_in.html`; CSP login ajustada para estilos/JS inline.
+- Servicio `remasa-id-admin`: Django `admin_app` (ExternalUser, signal `htpasswd`, admin listado rápido), SQLite `./data/db`, WhiteNoise + collectstatic.
+- OAuth2 Proxy: `--htpasswd-file`, `--display-htpasswd-form=true`; rutas de config bajo `/opt/remasa/config`.
+- Nginx: `admin.remasa.com` -> `remasa-id-admin:8000` (TLS, auth_request, solo IT Manager).
+- Middleware `ProxyEmailAuthMiddleware` para sesión Django tras cabecera Nginx.
+
 ## 2026-05-04 (finalizacion produccion)
 - Referencia de repo: `https://github.com/jugauna/ReMASA-ID.git`; VPS `67.207.83.113`, Hostinger `89.117.7.185`.
 - Nginx: CSP estricta en login y apps; intranet sin CSP (WordPress); `proxy_ssl_server_name` y `Host` hacia Hostinger.

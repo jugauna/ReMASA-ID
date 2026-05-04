@@ -3,3 +3,16 @@
 
 # Certificados TLS (solo plantillas / .gitkeep en repo)
 data/certs/*.pem
+
+# SQLite del panel admin (persistente en ./data/db)
+data/db/*.sqlite3
+
+# htpasswd generado (bootstrap y usuarios externos)
+config/externos.htpasswd
+
+# collectstatic local del panel Django
+admin/staticfiles/
+
+# Python
+__pycache__/
+*.py[cod]

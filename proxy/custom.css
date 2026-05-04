@@ -1,16 +1,16 @@
 /* ReMASA ID — Login (estética alineada con remasa.com: azul corporativo, limpio, profesional) */
 :root {
-  --remasa-blue: #005ea8;
-  --remasa-blue-mid: #0078c8;
-  --remasa-blue-dark: #003d6b;
+  --remasa-blue: #003366;
+  --remasa-blue-mid: #004d99;
+  --remasa-blue-dark: #002244;
   --remasa-sky: #e8f2fb;
   --remasa-bg: #f5f8fc;
   --remasa-text: #1a2332;
   --remasa-muted: #5c6b7f;
   --remasa-card: #ffffff;
   --remasa-radius: 16px;
-  --remasa-shadow: 0 20px 50px rgba(0, 61, 107, 0.12);
-  --remasa-border: rgba(0, 94, 168, 0.12);
+  --remasa-shadow: 0 20px 50px rgba(0, 51, 102, 0.14);
+  --remasa-border: rgba(0, 51, 102, 0.12);
 }
 
 *,
@@ -124,14 +124,14 @@ body.login-page {
   font-weight: 600;
   text-decoration: none;
   cursor: pointer;
-  box-shadow: 0 4px 14px rgba(0, 94, 168, 0.35);
+  box-shadow: 0 4px 14px rgba(0, 51, 102, 0.35);
   transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
 }
 
 .btn-google:hover {
   filter: brightness(1.05);
   transform: translateY(-1px);
-  box-shadow: 0 8px 22px rgba(0, 94, 168, 0.4);
+  box-shadow: 0 8px 22px rgba(0, 51, 102, 0.4);
 }
 
 .btn-google:active {
